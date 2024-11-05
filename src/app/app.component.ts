@@ -7,6 +7,7 @@ import { ContatoComponent } from './componentes/contato/contato.component';
 import { FormsModule } from '@angular/forms';
 
 import agenda from './agenda.json';
+import { FormularioContatoComponent } from './paginas/formulario-contato/formulario-contato.component';
 interface Icontato {
   id: number;
   nome: string;
@@ -23,6 +24,7 @@ interface Icontato {
     SeparadorComponent,
     ContatoComponent,
     FormsModule,
+    FormularioContatoComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
