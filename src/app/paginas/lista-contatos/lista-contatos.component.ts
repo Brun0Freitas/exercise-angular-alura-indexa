@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-inferrable-types */
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -37,7 +38,9 @@ export class ListaContatosComponent implements OnInit {
   constructor(private contatoService: ContatoService) {}
 
   ngOnInit() {
-    this.listaContatos = this.contatoService.obterContatos();
+    this.contatoService.obterContatos().subscribe((listaContatos) => {
+      this.listaContatos = listaContatos;
+    });
   }
 
   filtrarContatoPorTexto(): Icontato[] {
