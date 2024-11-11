@@ -14,11 +14,15 @@ export const routes: Routes = [
     component: FormularioContatoComponent,
   },
   {
+    path: 'formulario/:id',
+    component: FormularioContatoComponent,
+  },
+  {
     path: 'lista-contatos',
     component: ListaContatosComponent,
   },
   {
-    path: 'perfil-contatos',
+    path: 'perfil-contato/:id',
     component: PerfilContatoComponent,
   },
 ];

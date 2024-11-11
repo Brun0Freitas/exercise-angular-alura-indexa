@@ -1,31 +1,14 @@
 {
   "contatos": [
     {
-      "nome": "Maria",
-      "telefone": "99 99999999",
-      "email": "maria@email.com",
-      "aniversario": "1995-06-01",
+      "nome": "Pavoa",
+      "avatar": "data:image/jpeg;base64,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",
+      "telefone": "61-9-9999-9999",
+      "email": "pavoa@email.com",
+      "aniversario": "2024-11-11",
       "redes": "",
       "observacoes": "",
       "id": 1
-    },
-    {
-      "nome": "João",
-      "telefone": "88 88888888",
-      "email": "joao@email.com",
-      "aniversario": "1990-01-06",
-      "redes": "",
-      "observacoes": "",
-      "id": 2
-    },
-    {
-      "nome": "Pavão",
-      "telefone": "61 9-9999-9999",
-      "email": "pavao@bb.com.br",
-      "aniversario": "",
-      "redes": "",
-      "observacoes": "",
-      "id": 3
     }
   ]
 }

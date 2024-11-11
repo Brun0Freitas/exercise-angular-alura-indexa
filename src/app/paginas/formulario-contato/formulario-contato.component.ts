@@ -8,7 +8,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { NgClass } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ContatoService } from '../../services/contato.service';
 
 @Component({
@@ -27,15 +27,21 @@ import { ContatoService } from '../../services/contato.service';
 export class FormularioContatoComponent implements OnInit {
   contatoForm!: FormGroup;
 
-  constructor(private contatoService: ContatoService, private router: Router) {}
+  constructor(
+    private contatoService: ContatoService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
+  ) {}
 
   ngOnInit() {
     this.iniciarlizarFormulario();
+    this.carregarContato();
   }
 
   iniciarlizarFormulario() {
     this.contatoForm = new FormGroup({
       nome: new FormControl('', Validators.required),
+      avatar: new FormControl('', Validators.required),
       telefone: new FormControl('', Validators.required),
       email: new FormControl('', [Validators.required, Validators.email]),
       aniversario: new FormControl(''),
@@ -44,15 +50,45 @@ export class FormularioContatoComponent implements OnInit {
     });
   }
 
+  carregarContato() {
+    const id = this.activatedRoute.snapshot.paramMap.get('id');
+    if (id) {
+      this.contatoService.buscarPorId(parseInt(id)).subscribe((contato) => {
+        this.contatoForm.patchValue(contato);
+      });
+    }
+  }
+
   salvarContato() {
-    const novoContato = this.contatoForm.value;
-    this.contatoService.salvarContato(novoContato).subscribe(() => {
+    const contato = this.contatoForm.value;
+    const id = this.activatedRoute.snapshot.paramMap.get('id');
+    contato.id = id ? parseInt(id) : null;
+
+    this.contatoService.editarOuSalvar(contato).subscribe(() => {
       this.contatoForm.reset();
       this.router.navigateByUrl('/lista-contatos');
     });
   }
 
+  selecionarArquivo(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+      this.lerArquivo(file);
+    }
+  }
+
+  lerArquivo(file: File) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (reader.result) {
+        this.contatoForm.get('avatar')?.setValue(reader.result);
+      }
+    };
+    reader.readAsDataURL(file);
+  }
+
   cancelar() {
     this.contatoForm.reset();
+    this.router.navigateByUrl('/lista-contatos');
   }
 }

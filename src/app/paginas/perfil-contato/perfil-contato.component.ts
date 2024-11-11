@@ -1,22 +1,49 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ContainerComponent } from '../../componentes/container/container.component';
 import { FormularioContatoComponent } from '../formulario-contato/formulario-contato.component';
 import { Icontato } from '../../componentes/contato/icontato';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ContatoService } from '../../services/contato.service';
+import { SeparadorComponent } from '../../componentes/separador/separador.component';
 
 @Component({
   selector: 'app-perfil-contato',
   standalone: true,
-  imports: [ContainerComponent, FormularioContatoComponent],
+  imports: [ContainerComponent, RouterLink, SeparadorComponent],
   templateUrl: './perfil-contato.component.html',
   styleUrl: './perfil-contato.component.css',
 })
-export class PerfilContatoComponent {
+export class PerfilContatoComponent implements OnInit {
   contato: Icontato = {
     id: 0,
-    nome: 'dev',
-    telefone: '61-9-9999-9999',
-    email: 'dev@email.com',
-    aniversario: '07/11/2024',
-    redes: 'dev.com',
+    nome: '',
+    avatar: '',
+    telefone: '',
+    email: '',
+    aniversario: '',
+    redes: '',
   };
+
+  constructor(
+    private activateRoute: ActivatedRoute,
+    private contatoService: ContatoService,
+    private router: Router
+  ) {}
+
+  ngOnInit() {
+    const id = this.activateRoute.snapshot.paramMap.get('id');
+    if (id) {
+      this.contatoService.buscarPorId(parseInt(id)).subscribe((contato) => {
+        this.contato = contato;
+      });
+    }
+  }
+
+  excluir() {
+    if (this.contato.id) {
+      this.contatoService.excluirContato(this.contato.id).subscribe(() => {
+        this.router.navigateByUrl('/lista-contatos');
+      });
+    }
+  }
 }
